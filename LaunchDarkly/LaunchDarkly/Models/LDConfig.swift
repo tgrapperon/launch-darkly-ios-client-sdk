@@ -459,12 +459,17 @@ public struct LDConfig {
         self.mobileKey = mobileKey
         self.autoEnvAttributes = (autoEnvAttributes == .enabled) // mapping API enum to bool
         minima = Minima(isDebugBuild: isDebugBuild)
+      #if !os(visionOS)
+
         allowStreamingMode = SystemCapabilities.operatingSystem.isStreamingEnabled
         allowBackgroundUpdates = SystemCapabilities.operatingSystem.isBackgroundEnabled
         _secondaryMobileKeys = Defaults.secondaryMobileKeys
         if mobileKey.isEmpty {
             Log.debug(typeName(and: #function, appending: ": ") + "mobileKey is empty. The SDK will not operate correctly without a valid mobile key.")
         }
+      #else
+      fatalError()
+      #endif
     }
 
     /**

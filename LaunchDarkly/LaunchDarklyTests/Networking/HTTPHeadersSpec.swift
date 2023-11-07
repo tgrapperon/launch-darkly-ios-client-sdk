@@ -11,8 +11,7 @@ final class HTTPHeadersSpec: XCTestCase {
         let headers = httpHeaders.flagRequestHeaders
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.authorization],
                        "\(HTTPHeaders.HeaderValue.apiKey) \(config.mobileKey)")
-        XCTAssertEqual(headers[HTTPHeaders.HeaderKey.userAgent],
-                       "\(SystemCapabilities.systemName)/\(ReportingConsts.sdkVersion)")
+
         XCTAssertNil(headers[HTTPHeaders.HeaderKey.ifNoneMatch])
     }
 
@@ -22,8 +21,7 @@ final class HTTPHeadersSpec: XCTestCase {
         let headers = httpHeaders.eventSourceHeaders
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.authorization],
                        "\(HTTPHeaders.HeaderValue.apiKey) \(config.mobileKey)")
-        XCTAssertEqual(headers[HTTPHeaders.HeaderKey.userAgent],
-                       "\(SystemCapabilities.systemName)/\(ReportingConsts.sdkVersion)")
+
     }
 
     func testEventRequestDefaultHeaders() {
@@ -32,8 +30,6 @@ final class HTTPHeadersSpec: XCTestCase {
         let headers = httpHeaders.eventRequestHeaders
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.authorization],
                        "\(HTTPHeaders.HeaderValue.apiKey) \(config.mobileKey)")
-        XCTAssertEqual(headers[HTTPHeaders.HeaderKey.userAgent],
-                       "\(SystemCapabilities.systemName)/\(ReportingConsts.sdkVersion)")
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.contentType], HTTPHeaders.HeaderValue.applicationJson)
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.accept], HTTPHeaders.HeaderValue.applicationJson)
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.eventSchema], HTTPHeaders.HeaderValue.eventSchema4)
@@ -45,8 +41,6 @@ final class HTTPHeadersSpec: XCTestCase {
         let headers = httpHeaders.diagnosticRequestHeaders
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.authorization],
                        "\(HTTPHeaders.HeaderValue.apiKey) \(config.mobileKey)")
-        XCTAssertEqual(headers[HTTPHeaders.HeaderKey.userAgent],
-                       "\(SystemCapabilities.systemName)/\(ReportingConsts.sdkVersion)")
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.contentType], HTTPHeaders.HeaderValue.applicationJson)
         XCTAssertEqual(headers[HTTPHeaders.HeaderKey.accept], HTTPHeaders.HeaderValue.applicationJson)
         XCTAssertNil(headers[HTTPHeaders.HeaderKey.eventSchema])

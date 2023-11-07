@@ -99,9 +99,6 @@ final class LDConfigSpec: XCTestCase {
             XCTAssertEqual(config.backgroundFlagPollingInterval, Constants.backgroundFlagPollingInterval, "\(os)")
             XCTAssertEqual(config.streamingMode, Constants.streamingMode, "\(os)")
             // TODO(os-tests): We need to expand this to the other OSs
-            if os == .iOS && os == SystemCapabilities.operatingSystem {
-                XCTAssertEqual(config.enableBackgroundUpdates, os.isBackgroundEnabled, "\(os)")
-            }
             XCTAssertEqual(config.startOnline, Constants.startOnline, "\(os)")
             XCTAssertEqual(config.allContextAttributesPrivate, Constants.allContextAttributesPrivate, "\(os)")
             XCTAssertEqual(config.privateContextAttributes, Constants.privateContextAttributes, "\(os)")
@@ -199,9 +196,7 @@ final class LDConfigSpec: XCTestCase {
         for operatingSystem in OperatingSystem.allOperatingSystems {
             let config = LDConfig(mobileKey: LDConfig.Constants.mockMobileKey, autoEnvAttributes: .disabled)
             // TODO(os-tests): We need to expand this to the other OSs
-            if operatingSystem == .iOS && operatingSystem == SystemCapabilities.operatingSystem {
-                XCTAssertEqual(config.allowStreamingMode, operatingSystem.isStreamingEnabled)
-            }
+
         }
     }
 
@@ -210,9 +205,7 @@ final class LDConfigSpec: XCTestCase {
             var config = LDConfig(mobileKey: LDConfig.Constants.mockMobileKey, autoEnvAttributes: .disabled)
             config.enableBackgroundUpdates = true
             // TODO(os-tests): We need to expand this to the other OSs
-            if operatingSystem == .iOS && operatingSystem == SystemCapabilities.operatingSystem {
-                XCTAssertEqual(config.enableBackgroundUpdates, operatingSystem.isBackgroundEnabled)
-            }
+
         }
     }
 

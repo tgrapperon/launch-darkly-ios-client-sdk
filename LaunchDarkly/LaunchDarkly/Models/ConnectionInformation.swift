@@ -129,10 +129,12 @@ public struct ConnectionInformation: Codable, CustomStringConvertible {
         if config.streamingMode == .streaming && !ldClient.isInSupportedRunMode {
             reason = " LDClient is in background mode with background updates disabled."
         }
+      #if !os(visionOS)
         if reason.isEmpty && config.streamingMode == .streaming && !config.allowStreamingMode {
             reason = " LDConfig disallowed streaming mode. "
             reason += !SystemCapabilities.operatingSystem.isStreamingEnabled ? "Streaming is not allowed on \(SystemCapabilities.operatingSystem)." : "Unknown reason."
         }
+      #endif
         Log.debug(ldClient.typeName(and: #function, appending: ": ") + "\(streamingMode)\(reason)")
         return streamingMode
     }

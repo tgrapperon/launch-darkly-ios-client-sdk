@@ -36,11 +36,13 @@ final class ModifierSpec: XCTestCase {
         deviceBuilder.kind("ld_device")
         deviceBuilder.trySetValue("manufacturer", LDValue.string(EnvironmentReportingMock.Constants.manufacturer))
         deviceBuilder.trySetValue("model", LDValue.string(EnvironmentReportingMock.Constants.deviceModel))
+      #if !os(visionOS)
         deviceBuilder.trySetValue("os", LDValue(dictionaryLiteral:
             ("family", EnvironmentReportingMock.Constants.osFamily.toLDValue()),
             ("name", SystemCapabilities.systemName.toLDValue()),
             ("version", EnvironmentReportingMock.Constants.systemVersion.toLDValue())
         ))
+      #endif
         deviceBuilder.trySetValue("envAttributesVersion", AutoEnvContextModifier.specVersion.toLDValue())
         let deviceContext = try deviceBuilder.build().get()
 
@@ -75,11 +77,13 @@ final class ModifierSpec: XCTestCase {
         deviceBuilder.kind("ld_device")
         deviceBuilder.trySetValue("manufacturer", EnvironmentReportingMock.Constants.manufacturer.toLDValue())
         deviceBuilder.trySetValue("model", EnvironmentReportingMock.Constants.deviceModel.toLDValue())
+#if !os(visionOS)
         deviceBuilder.trySetValue("os", LDValue(dictionaryLiteral:
             ("family", EnvironmentReportingMock.Constants.osFamily.toLDValue()),
             ("name", SystemCapabilities.systemName.toLDValue()),
             ("version", EnvironmentReportingMock.Constants.systemVersion.toLDValue())
         ))
+      #endif
         deviceBuilder.trySetValue("envAttributesVersion", AutoEnvContextModifier.specVersion.toLDValue())
         let deviceContext = try deviceBuilder.build().get()
 

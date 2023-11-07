@@ -30,7 +30,11 @@ struct HTTPHeaders {
     init(config: LDConfig, environmentReporter: EnvironmentReporting) {
         self.mobileKey = config.mobileKey
         self.additionalHeaders = config.additionalHeaders
+      #if !os(visionOS)
         self.userAgent = "\(SystemCapabilities.systemName)/\(ReportingConsts.sdkVersion)"
+      #else
+      self.userAgent = ""
+      #endif
         self.authKey = "\(HeaderValue.apiKey) \(config.mobileKey)"
         self.applicationTag = environmentReporter.applicationInfo.buildTag()
 

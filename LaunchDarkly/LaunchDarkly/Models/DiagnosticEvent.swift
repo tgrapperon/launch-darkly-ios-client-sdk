@@ -69,11 +69,15 @@ struct DiagnosticPlatform: Encodable {
     let deviceType: String
 
     init(environmentReporting: EnvironmentReporting) {
-        systemName = SystemCapabilities.operatingSystem.rawValue
-        systemVersion = environmentReporting.systemVersion
-        backgroundEnabled = SystemCapabilities.operatingSystem.isBackgroundEnabled
-        streamingEnabled = SystemCapabilities.operatingSystem.isStreamingEnabled
-        deviceType = environmentReporting.deviceModel
+      #if !os(visionOS)
+      systemName = SystemCapabilities.operatingSystem.rawValue
+      systemVersion = environmentReporting.systemVersion
+      backgroundEnabled = SystemCapabilities.operatingSystem.isBackgroundEnabled
+      streamingEnabled = SystemCapabilities.operatingSystem.isStreamingEnabled
+      deviceType = environmentReporting.deviceModel
+      #else
+      fatalError()
+      #endif
     }
 }
 

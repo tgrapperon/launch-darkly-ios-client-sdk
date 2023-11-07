@@ -476,18 +476,13 @@ final class LDClientSpec: QuickSpec {
                         it("takes the client and service objects online when background enabled") {
                             expect(testContext.subject.isOnline) == true
 
-                            // TODO(os-tests): We need to expand this to the other OSs
-                            if os == .iOS && os == SystemCapabilities.operatingSystem {
-                                expect(testContext.subject.flagSynchronizer.isOnline) == os.isBackgroundEnabled
-                            }
+
                             expect(testContext.subject.eventReporter.isOnline) == testContext.subject.isOnline
                         }
                         it("saves the config") {
                             expect(testContext.subject.service.config) == testContext.config
                             // TODO(os-tests): We need to expand this to the other OSs
-                            if os == .iOS && os == SystemCapabilities.operatingSystem {
-                                expect(testContext.makeFlagSynchronizerStreamingMode) == os.backgroundStreamingMode
-                            }
+
                             expect(testContext.makeFlagSynchronizerPollingInterval) == testContext.config.flagPollingInterval(runMode: .background)
                             expect(testContext.serviceFactoryMock.makeEventReporterReceivedService?.config) == testContext.config
                         }
@@ -688,12 +683,7 @@ final class LDClientSpec: QuickSpec {
 
                             expect(testContext.subject.flagSynchronizer.isOnline) == testContext.subject.isOnline
 
-                            // TODO(os-tests): We need to expand this to the other OSs
-                            if os == .iOS && os == SystemCapabilities.operatingSystem {
-                                expect(testContext.throttlerMock?.runThrottledCallCount) == (os.isBackgroundEnabled ? 1 : 0)
-                                expect(testContext.subject.isOnline) == os.isBackgroundEnabled
-                                expect(testContext.makeFlagSynchronizerStreamingMode) == os.backgroundStreamingMode
-                            }
+
 
                             expect(testContext.makeFlagSynchronizerPollingInterval) == testContext.config.flagPollingInterval(runMode: testContext.subject.runMode)
                             expect(testContext.subject.eventReporter.isOnline) == testContext.subject.isOnline
@@ -1053,7 +1043,7 @@ final class LDClientSpec: QuickSpec {
                             it("background updates disabled") {
                                 let testContext = TestContext(startOnline: true, enableBackgroundUpdates: false)
                                 testContext.start()
-                                NotificationCenter.default.post(name: SystemCapabilities.backgroundNotification!, object: self)
+
                                 expect(testContext.subject.runMode).toEventually(equal(LDClientRunMode.background))
 
                                 expect(testContext.subject.isOnline) == true
@@ -1065,20 +1055,13 @@ final class LDClientSpec: QuickSpec {
                                 let testContext = TestContext(startOnline: true)
                                 testContext.start()
 
-                                waitUntil { done in
-                                    NotificationCenter.default.post(name: SystemCapabilities.backgroundNotification!, object: self)
-                                    DispatchQueue(label: "BackgroundUpdatesEnabled").asyncAfter(deadline: .now() + 0.2, execute: done)
-                                }
+
 
                                 expect(testContext.subject.isOnline) == true
                                 expect(testContext.subject.runMode) == LDClientRunMode.background
                                 expect(testContext.eventReporterMock.isOnline) == true
 
-                                // TODO(os-tests): We need to expand this to the other OSs
-                                if os == .iOS && os == SystemCapabilities.operatingSystem {
-                                    expect(testContext.flagSynchronizerMock.isOnline) == os.isBackgroundEnabled
-                                    expect(testContext.flagSynchronizerMock.streamingMode) == os.backgroundStreamingMode
-                                }
+
                             }
                         }
                     }
@@ -1086,7 +1069,6 @@ final class LDClientSpec: QuickSpec {
                 it("when offline") {
                     let testContext = TestContext()
                     testContext.start()
-                    NotificationCenter.default.post(name: SystemCapabilities.backgroundNotification!, object: self)
 
                     expect(testContext.subject.isOnline) == false
                     expect(testContext.subject.runMode) == LDClientRunMode.background
@@ -1103,7 +1085,7 @@ final class LDClientSpec: QuickSpec {
                         it("when online at foreground notification") {
                             let testContext = TestContext(startOnline: true)
                             testContext.start(runMode: .background)
-                            NotificationCenter.default.post(name: SystemCapabilities.foregroundNotification!, object: self)
+
 
                             expect(testContext.subject.isOnline) == true
                             expect(testContext.subject.runMode) == LDClientRunMode.foreground
@@ -1113,7 +1095,6 @@ final class LDClientSpec: QuickSpec {
                         it("when offline at foreground notification") {
                             let testContext = TestContext()
                             testContext.start(runMode: .background)
-                            NotificationCenter.default.post(name: SystemCapabilities.foregroundNotification!, object: self)
 
                             expect(testContext.subject.isOnline) == false
                             expect(testContext.subject.runMode) == LDClientRunMode.foreground

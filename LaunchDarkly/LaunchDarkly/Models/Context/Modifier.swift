@@ -85,12 +85,14 @@ class AutoEnvContextModifier {
         callables[AutoEnvContextModifier.envAttributesVersion] = { () -> LDValue in AutoEnvContextModifier.specVersion.toLDValue() }
         callables[AutoEnvContextModifier.attrManufacturer] = { () -> LDValue in self.environmentReporter.manufacturer.toLDValue() }
         callables[AutoEnvContextModifier.attrModel] = { () -> LDValue in self.environmentReporter.deviceModel.toLDValue() }
+      #if !os(visionOS)
+
         callables[AutoEnvContextModifier.attrOs] = {() -> LDValue in LDValue(dictionaryLiteral:
             (AutoEnvContextModifier.attrFamily, self.environmentReporter.osFamily.toLDValue()),
             (AutoEnvContextModifier.attrName, SystemCapabilities.systemName.toLDValue()),
             (AutoEnvContextModifier.attrVersion, self.environmentReporter.systemVersion.toLDValue())
         )}
-
+      #endif
         return ContextRecipe(
             kind: AutoEnvContextModifier.ldDeviceKind,
             keyCallable: keyCallable,

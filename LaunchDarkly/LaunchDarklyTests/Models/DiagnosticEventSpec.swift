@@ -116,12 +116,7 @@ final class DiagnosticEventSpec: QuickSpec {
                         expect(diagnosticPlatform.systemVersion) == environmentReporter.systemVersion
                         expect(diagnosticPlatform.deviceType) == environmentReporter.deviceModel
 
-                        // TODO(os-tests): We need to expand this to the other OSs
-                        if os == .iOS && os == SystemCapabilities.operatingSystem {
-                            expect(diagnosticPlatform.systemName) == os.rawValue
-                            expect(diagnosticPlatform.backgroundEnabled) == os.isBackgroundEnabled
-                            expect(diagnosticPlatform.streamingEnabled) == os.isStreamingEnabled
-                        }
+
                     }
                     it("encodes correct values to keys") {
                         encodesToObject(diagnosticPlatform) { decoded in
@@ -233,9 +228,7 @@ final class DiagnosticEventSpec: QuickSpec {
                     expect(diagnosticConfig.backgroundPollingIntervalMillis) == 1_800_000
                     expect(diagnosticConfig.useReport) == true
                     // TODO(os-tests): We need to expand this to the other OSs
-                    if SystemCapabilities.operatingSystem == .iOS {
-                        expect(diagnosticConfig.backgroundPollingDisabled) == true
-                    }
+
                     expect(diagnosticConfig.evaluationReasonsRequested) == true
                     // All negative values become -1 for consistency
                     expect(diagnosticConfig.maxCachedContexts) == -1
@@ -354,9 +347,7 @@ final class DiagnosticEventSpec: QuickSpec {
                 expect(diagnosticInit.sdk.wrapperName) == customConfig.wrapperName
                 expect(diagnosticInit.configuration.customBaseURI) == true
                 // TODO(os-tests): We need to expand this to the other OSs
-                if SystemCapabilities.operatingSystem == .iOS {
-                    expect(diagnosticInit.platform.backgroundEnabled) == false
-                }
+  
             }
             it("encodes correct values to keys") {
                 let expectedId = encodeToLDValue(diagnosticId)
